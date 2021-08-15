@@ -9,7 +9,7 @@ import 'Application/GameInit_Bloc/Gameinitialization_bloc.dart';
 import 'Presentation/HomePage/home.dart';
 import 'Presentation/SelectPage/select_playericon.dart';
 import 'package:bloc/bloc.dart';
-
+//main
 class SimpleBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
@@ -30,22 +30,19 @@ class SimpleBlocObserver extends BlocObserver {
   }
 }
 
-
 void main() {
   Bloc.observer = SimpleBlocObserver();
-  runApp(
-    MultiBlocProvider(
-        providers: [
-          BlocProvider<GameInitBloc>(
-            create:(context)=> GameInitBloc()..add(StartHome()),
-          ),
-          BlocProvider<GameProcessBloc>(
-            create: (context) => GameProcessBloc()..add(StartGameProcess()),
-          ),
-        ],
-      child:MyApp(),
-    )
-  );
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<GameInitBloc>(
+        create: (context) => GameInitBloc()..add(StartHome()),
+      ),
+      BlocProvider<GameProcessBloc>(
+        create: (context) => GameProcessBloc()..add(StartGameProcess()),
+      ),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -55,26 +52,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Tic Tac Toe',
       color: Colors.white,
-      home:Scaffold(
-        body:BlocBuilder<GameInitBloc,GameInitState>(
-            builder:(context,state){
-              if(state is GameLaunched){
-                return Home();
-              }
-              else if(state is StartGameInitializing|| state is GameIconsInitialized){
-                return PlayersIcons();
-              }
-              else if(state is StartGameState){
-                return GameScreen(initialData: state.initialData,);
-              }
-              return Home();
-            }
-        ),
+      home: Scaffold(
+        body:
+            BlocBuilder<GameInitBloc, GameInitState>(builder: (context, state) {
+          if (state is GameLaunched) {
+            return Home();
+          } else if (state is StartGameInitializing ||
+              state is GameIconsInitialized) {
+            return PlayersIcons();
+          } else if (state is StartGameState) {
+            return GameScreen(
+              initialData: state.initialData,
+            );
+          }
+          return Home();
+        }),
         backgroundColor: Colors.lightGreen[200],
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
     );
   }
 }
-
-
